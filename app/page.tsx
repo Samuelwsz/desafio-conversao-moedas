@@ -1,5 +1,4 @@
 import Header from "./components/Header"
-import DolarParaReal from "./components/DolarReal"
 import ConversaoTeste from "./components/ConversaoTeste"
 
 export default function Home() {
