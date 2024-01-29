@@ -5,21 +5,20 @@ import { useState } from "react"
 import ConvertIcon from "@/public/Convert.svg"
 import { converterMoeda } from "../api/router"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 
 export default function ConversaoTeste() {
   const [quantia, setQuantia] = useState<number | string>("")
   const [deMoeda, setDeMoeda] = useState("BRL")
   const [paraMoeda, setParaMoeda] = useState("USD")
 
-  const [resultado, setResultado] = useState(0)
+  // const [resultado, setResultado] = useState(0)
 
   const router = useRouter()
 
   async function handleConverterMoeda() {
     const convertedResult = await converterMoeda(quantia, deMoeda, paraMoeda)
     setQuantia("")
-    setResultado(convertedResult)
+    // setResultado(convertedResult)
 
     // Criar a query string com o resultado da conversão
     const queryString = `${convertedResult}`
