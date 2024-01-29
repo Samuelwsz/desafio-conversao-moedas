@@ -4,6 +4,8 @@ import Image from "next/image"
 import { useState } from "react"
 import ConvertIcon from "@/public/Convert.svg"
 import { converterMoeda } from "../api/router"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export default function ConversaoTeste() {
   const [quantia, setQuantia] = useState<number | string>("")
@@ -12,10 +14,21 @@ export default function ConversaoTeste() {
 
   const [resultado, setResultado] = useState(0)
 
+  const router = useRouter()
+
   async function handleConverterMoeda() {
     const convertedResult = await converterMoeda(quantia, deMoeda, paraMoeda)
     setQuantia("")
     setResultado(convertedResult)
+
+    // Criar a query string com o resultado da conversão
+    const queryString = `${convertedResult}`
+
+    // Construir o URL para a próxima página com a query string
+    const url = `/ResultadoConversao?${queryString}`
+
+    // Navegar para a próxima página usando o componente Link
+    router.push(url)
   }
 
   return (
@@ -88,7 +101,7 @@ export default function ConversaoTeste() {
         <Image src={ConvertIcon} alt="icon" /> Converter
       </button>
 
-      <div className="mt-3">{resultado.toFixed(2)}</div>
+      {/*<div className="mt-3">{resultado.toFixed(2)}</div>*/}
     </main>
   )
 }
