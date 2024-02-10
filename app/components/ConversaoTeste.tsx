@@ -6,28 +6,37 @@ import ConvertIcon from "@/public/Convert.svg"
 import { converterMoeda } from "../api/router"
 import { useRouter } from "next/navigation"
 
+const moedas = [
+  { value: "USD", label: "DOLAR" },
+  { value: "BRL", label: "REAL" },
+  { value: "EUR", label: "EURO" },
+  { value: "JPY", label: "YEN JAPONÊS" },
+  { value: "CNY", label: "YUAN CHiNÊS" },
+  { value: "INR", label: "RUPEE" },
+]
+
 export default function ConversaoTeste() {
   const [quantia, setQuantia] = useState<number | string>("")
   const [deMoeda, setDeMoeda] = useState("BRL")
   const [paraMoeda, setParaMoeda] = useState("USD")
 
-  // const [resultado, setResultado] = useState(0)
+   const [resultado, setResultado] = useState(0)
 
-  const router = useRouter()
+  //const router = useRouter()
 
   async function handleConverterMoeda() {
     const convertedResult = await converterMoeda(quantia, deMoeda, paraMoeda)
     setQuantia("")
-    // setResultado(convertedResult)
+     setResultado(convertedResult)
 
     // Criar a query string com o resultado da conversão
-    const queryString = `${convertedResult}`
+   // const queryString = `${convertedResult}`
 
     // Construir o URL para a próxima página com a query string
-    const url = `/ResultadoConversao?${queryString}`
+  //  const url = `/ResultadoConversao?${queryString}`
 
     // Navegar para a próxima página usando o componente Link
-    router.push(url)
+   // router.push(url)
   }
 
   return (
@@ -54,15 +63,11 @@ export default function ConversaoTeste() {
           onChange={(e) => setDeMoeda(e.target.value)}
           className="p-2 mt-2 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
         >
-          <option value="USD" className="py-2">
-            DOLAR
-          </option>
-          <option value="BRL" className="py-2">
-            REAL
-          </option>
-          <option value="EUR" className="py-2">
-            EURO
-          </option>
+          {moedas.map((moeda) => (
+            <option key={moeda.value} value={moeda.value} className="py-2">
+              {moeda.label}
+            </option>
+          ))}
         </select>
 
         <select
@@ -70,15 +75,11 @@ export default function ConversaoTeste() {
           onChange={(e) => setParaMoeda(e.target.value)}
           className="p-2 mt-2 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
         >
-          <option value="USD" className="py-2">
-            DOLAR
-          </option>
-          <option value="BRL" className="py-2">
-            REAL
-          </option>
-          <option value="EUR" className="py-2">
-            EURO
-          </option>
+          {moedas.map((moeda) => (
+            <option key={moeda.value} value={moeda.value} className="py-2">
+              {moeda.label}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -100,7 +101,7 @@ export default function ConversaoTeste() {
         <Image src={ConvertIcon} alt="icon" /> Converter
       </button>
 
-      {/*<div className="mt-3">{resultado.toFixed(2)}</div>*/}
+      {<div className="mt-3">{resultado.toFixed(2)}</div>}
     </main>
   )
 }
