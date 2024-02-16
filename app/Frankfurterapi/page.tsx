@@ -90,11 +90,9 @@ export default function ConversaoTeste() {
         <Image src={ConvertIcon} alt="icon" /> Converter
       </button>
 
-      {resultado && (
-        <div className="mt-3">
-          <p>R$ {resultado.toFixed(2)}</p>
-        </div>
-      )}
+      <div className="mt-3">
+        <p>{resultado?.toFixed(2)}</p>
+      </div>
     </main>
   )
 }
