@@ -46,9 +46,10 @@ export default function DolarParaReal() {
       exchangeRates.USDBRL &&
       exchangeRates.USDBRL.bid
     ) {
-      // Calcula o valor total, incluindo a taxa do estado
+      // Calculate the total value, including the state tax
       const total = dolarAmount * parseFloat(exchangeRates.USDBRL.bid)
-      const valorComTaxa = total + (total * taxaEstado) / 100
+      const valorComTaxa =
+        total + (total * (isNaN(taxaEstado) ? 0 : taxaEstado)) / 100
       return valorComTaxa.toFixed(2)
     }
     return ""
@@ -60,11 +61,13 @@ export default function DolarParaReal() {
     const convertedAmount = convertToReal()
     setConvertedValue(convertedAmount)
     setDolarValue("")
+    setTaxaEstado(0)
   }
 
   // Atualize a entrada do campo de taxa do estado para capturar seu valor
   const handleTaxaChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTaxaEstado(parseFloat(event.target.value))
+    const value = event.target.value
+    setTaxaEstado(value ? parseFloat(value) : 0)
   }
 
   return (
@@ -88,14 +91,19 @@ export default function DolarParaReal() {
             <label htmlFor="taxa" className="text-sm mb-1 text-gray-600">
               Taxa do Estado
             </label>
-            <input
-              type="number"
-              id="taxa"
-              placeholder="0 %"
-              className="p-2 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-              value={taxaEstado}
-              onChange={handleTaxaChange}
-            />
+            <div className="relative">
+              <input
+                type="number"
+                id="taxa"
+                placeholder="0"
+                className="p-2 pr-10 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                value={taxaEstado}
+                onChange={handleTaxaChange}
+              />
+              <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-gray-500">
+                %
+              </span>
+            </div>
           </div>
         </div>
 
