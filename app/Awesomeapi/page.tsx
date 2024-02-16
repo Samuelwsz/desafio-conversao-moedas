@@ -5,10 +5,19 @@ import axios from "axios"
 import Image from "next/image"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 
+interface ExchangeRates {
+  USDBRL: {
+    bid: string
+    // outras propriedades, se houver
+  }
+  // outras moedas, se houver
+}
+
 export default function DolarParaReal() {
-  const [exchangeRates, setExchangeRates] = useState(null)
+  const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(null)
   const [dolarValue, setDolarValue] = useState("")
   const [convertedValue, setConvertedValue] = useState("")
+  const [taxaEstado, setTaxaEstado] = useState(0)
 
   useEffect(() => {
     const fetchExchangeRates = async () => {
@@ -31,8 +40,16 @@ export default function DolarParaReal() {
 
   const convertToReal = () => {
     const dolarAmount = parseFloat(dolarValue)
-    if (!isNaN(dolarAmount)) {
-      return (dolarAmount * parseFloat(exchangeRates?.USDBRL.bid)).toFixed(2)
+    if (
+      !isNaN(dolarAmount) &&
+      exchangeRates &&
+      exchangeRates.USDBRL &&
+      exchangeRates.USDBRL.bid
+    ) {
+      // Calcula o valor total, incluindo a taxa do estado
+      const total = dolarAmount * parseFloat(exchangeRates.USDBRL.bid)
+      const valorComTaxa = total + (total * taxaEstado) / 100
+      return valorComTaxa.toFixed(2)
     }
     return ""
   }
@@ -45,8 +62,13 @@ export default function DolarParaReal() {
     setDolarValue("")
   }
 
+  // Atualize a entrada do campo de taxa do estado para capturar seu valor
+  const handleTaxaChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTaxaEstado(parseFloat(event.target.value))
+  }
+
   return (
-    <main className="m-14">
+    <main className="mt-5">
       <form>
         <div className="flex gap-3">
           <div className="flex flex-col">
@@ -71,6 +93,8 @@ export default function DolarParaReal() {
               id="taxa"
               placeholder="0 %"
               className="p-2 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              value={taxaEstado}
+              onChange={handleTaxaChange}
             />
           </div>
         </div>
@@ -97,16 +121,27 @@ export default function DolarParaReal() {
         </div>
 
         <button
-          className="mt-5 bg-green-400 px-3 py-2 rounded-md text-white font-semibold flex items-center gap-2 cursor-pointer"
+          className={`mt-5 px-3 py-2 rounded-md text-white font-semibold flex items-center gap-2 cursor-pointer ${
+            !dolarValue || parseFloat(dolarValue) <= 0
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-400 hover:bg-green-500"
+          }`}
           onClick={handleConvert}
         >
           <Image src={ConvertIcon} alt="icon" /> Converter
         </button>
       </form>
 
-      <div>
-        <h2>Valor em Reais:</h2>
-        <p>{convertedValue}</p>
+      <div className="mt-3">
+        {convertedValue && (
+          <div className="mt-3">
+            <p>R$ {convertedValue}</p>
+          </div>
+        )}
+        {/*  <p>
+          {convertedValue &&
+            `${convertedValue} (+ ${taxaEstado}% de taxa do estado)`}
+          </p>*/}
       </div>
     </main>
   )

@@ -1,12 +1,15 @@
-import Header from "./components/Header"
-import ConversaoTeste from "./components/ConversaoTeste"
+import Link from "next/link"
 
 export default function Home() {
   return (
     <>
-      <div className="relative min-h-screen px-16 pt-8">
-        <Header />
-        <ConversaoTeste />
+      <div className="mt-14 flex gap-10">
+        <div className="bg-green-500 text-white p-2 rounded-md font-semibold">
+          <Link href="/Frankfurterapi">Frankfurter Api</Link>
+        </div>
+        <div className="bg-green-500 text-white p-2 rounded-md font-semibold">
+          <Link href="/Awesomeapi">Awesome Api</Link>
+        </div>
       </div>
     </>
   )

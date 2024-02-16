@@ -3,6 +3,7 @@
 import Image from "next/image"
 import logo from "@/public/Main Logo.svg"
 import { useEffect, useState } from "react"
+import Link from "next/link"
 
 export default function Header() {
   const [currentDateTime, setCurrentDateTime] = useState(new Date())
@@ -30,7 +31,10 @@ export default function Header() {
 
   return (
     <header className="block items-center gap-5 lg:flex md:flex">
-      <Image src={logo} alt="logo" width={150} height={150} priority />
+      <Link href="/">
+        <Image src={logo} alt="logo" width={150} height={150} priority />
+      </Link>
+
       <div>
         {Day} | {Hour}
         <p>Dados de cambio disponibilizados pela morningstar</p>
