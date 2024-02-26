@@ -19,6 +19,9 @@ export default function DolarParaReal() {
   const [convertedValue, setConvertedValue] = useState("")
   const [taxaEstado, setTaxaEstado] = useState(0)
 
+  const [useDinheiro, setUseDinheiro] = useState(false) // Estado para controlar se o usuário selecionou "Dinheiro"
+  const [useCartao, setUseCartao] = useState(false) // Estado para controlar se o usuário selecionou "Cartão"
+
   useEffect(() => {
     const fetchExchangeRates = async () => {
       try {
@@ -47,10 +50,20 @@ export default function DolarParaReal() {
       exchangeRates.USDBRL.bid
     ) {
       // Calculate the total value, including the state tax
-      const total = dolarAmount * parseFloat(exchangeRates.USDBRL.bid)
-      const valorComTaxa =
-        total + (total * (isNaN(taxaEstado) ? 0 : taxaEstado)) / 100
-      return valorComTaxa.toFixed(2)
+      let total = dolarAmount * parseFloat(exchangeRates.USDBRL.bid)
+      if (useDinheiro) {
+        const impostoEstado = (total * taxaEstado) / 100
+        const iofDinheiro = 1.1 / 100
+        total = (total + impostoEstado) * (1 + iofDinheiro)
+      } else if (useCartao) {
+        // Adicione a lógica para "Cartão" aqui
+        const impostoEstado = (total * taxaEstado) / 100
+        const iofCartao = 6.4 / 100 // IOF de transações internacionais
+        total = (total + impostoEstado) * (1 + iofCartao)
+      } else {
+        total += (total * (isNaN(taxaEstado) ? 0 : taxaEstado)) / 100
+      }
+      return total.toFixed(2)
     }
     return ""
   }
@@ -66,8 +79,25 @@ export default function DolarParaReal() {
 
   // Atualize a entrada do campo de taxa do estado para capturar seu valor
   const handleTaxaChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    setTaxaEstado(value ? parseFloat(value) : 0)
+    let value = parseFloat(event.target.value)
+    if (isNaN(value) || value < 0) {
+      value = 0 // Definindo como 0 se for NaN ou negativo
+    }
+    setTaxaEstado(value)
+  }
+
+  const handleDinheiroChange = () => {
+    setUseDinheiro(!useDinheiro)
+    if (useCartao) {
+      setUseCartao(false) // Desativa a opção de "Cartão" se "Dinheiro" for selecionada
+    }
+  }
+
+  const handleCartaoChange = () => {
+    setUseCartao(!useCartao)
+    if (useDinheiro) {
+      setUseDinheiro(false) // Desativa a opção de "Dinheiro" se "Cartão" for selecionada
+    }
   }
 
   return (
@@ -114,6 +144,8 @@ export default function DolarParaReal() {
               <input
                 type="checkbox"
                 className="form-checkbox h-5 w-5 text-blue-600"
+                checked={useDinheiro}
+                onChange={handleDinheiroChange}
               />
               <span className="ml-2">Dinheiro</span>
             </label>
@@ -122,6 +154,8 @@ export default function DolarParaReal() {
               <input
                 type="checkbox"
                 className="form-checkbox h-5 w-5 text-blue-600"
+                checked={useCartao}
+                onChange={handleCartaoChange}
               />
               <span className="ml-2">Cartão</span>
             </label>
