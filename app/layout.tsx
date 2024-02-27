@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import Image from "next/image"
 
-import ImgHome from "@/public/Mask.png"
 import Header from "./components/Header"
+import { ThemeProvider } from "./components/theme-provider"
+import { ModeToggle } from "./components/dark-mode"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,19 +19,22 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${inter.className} bg-gray-100 relative min-h-screen px-16 pt-8`}
-      >
-        <Header />
-        {children}
-        {/*
-          <Image
-            src={ImgHome}
-            alt="Imagem Responsiva"
-            className="fixed bottom-0 right-0 max-w-full h-auto"
-          />
-  */}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex justify-end p-3">
+            <ModeToggle />
+          </div>
+          <div className="px-16 pt-8">
+            <Header />
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   )

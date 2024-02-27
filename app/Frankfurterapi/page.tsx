@@ -31,7 +31,7 @@ export default function ConversaoTeste() {
   return (
     <main className="mt-14">
       <div className="flex flex-col">
-        <label htmlFor="dolar" className="text-lg mb-1 text-gray-600">
+        <label htmlFor="dolar" className="text-lg mb-1 text-gray-600 dark:text-white">
           Quantia
         </label>
         <input

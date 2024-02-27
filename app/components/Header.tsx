@@ -34,11 +34,7 @@ export default function Header() {
       <Link href="/">
         <Image src={logo} alt="logo" width={150} height={150} priority />
       </Link>
-
-      <div>
-        {Day} | {Hour}
-        <p>Dados de cambio disponibilizados pela morningstar</p>
-      </div>
+      {Day} | {Hour}
     </header>
   )
 }

@@ -105,7 +105,7 @@ export default function DolarParaReal() {
       <form>
         <div className="flex gap-3">
           <div className="flex flex-col">
-            <label htmlFor="dolar" className="text-sm mb-1 text-gray-600">
+            <label htmlFor="dolar" className="text-sm mb-1 text-gray-600 dark:text-white">
               Dólar
             </label>
             <input
@@ -118,7 +118,7 @@ export default function DolarParaReal() {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="taxa" className="text-sm mb-1 text-gray-600">
+            <label htmlFor="taxa" className="text-sm mb-1 text-gray-600 dark:text-white">
               Taxa do Estado
             </label>
             <div className="relative">
