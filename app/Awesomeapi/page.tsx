@@ -1,5 +1,7 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import ConvertIcon from "@/public/Convert.svg"
 import axios from "axios"
 import Image from "next/image"
@@ -105,28 +107,34 @@ export default function DolarParaReal() {
       <form>
         <div className="flex gap-3">
           <div className="flex flex-col">
-            <label htmlFor="dolar" className="text-sm mb-1 text-gray-600 dark:text-white">
+            <label
+              htmlFor="dolar"
+              className="text-sm mb-1 text-gray-600 dark:text-white"
+            >
               Dólar
             </label>
-            <input
+            <Input
               type="number"
               id="dolar"
               placeholder="$ 1,00"
-              className="p-2 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              className="p-2 w-full md:w-48 border dark:border-gray-300 outline-none"
               value={dolarValue}
               onChange={handleDolarChange}
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="taxa" className="text-sm mb-1 text-gray-600 dark:text-white">
+            <label
+              htmlFor="taxa"
+              className="text-sm mb-1 text-gray-600 dark:text-white"
+            >
               Taxa do Estado
             </label>
             <div className="relative">
-              <input
+              <Input
                 type="number"
                 id="taxa"
                 placeholder="0"
-                className="p-2 pr-10 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                className="p-2 w-full md:w-48 border dark:border-gray-300 outline-none"
                 value={taxaEstado}
                 onChange={handleTaxaChange}
               />
@@ -141,9 +149,9 @@ export default function DolarParaReal() {
           <h1>Tipo de Compra</h1>
           <div className="flex gap-3">
             <label className="inline-flex items-center mt-3">
-              <input
+              <Input
                 type="checkbox"
-                className="form-checkbox h-5 w-5 text-blue-600"
+                className="h-5 w-5"
                 checked={useDinheiro}
                 onChange={handleDinheiroChange}
               />
@@ -151,9 +159,9 @@ export default function DolarParaReal() {
             </label>
 
             <label className="inline-flex items-center mt-3">
-              <input
+              <Input
                 type="checkbox"
-                className="form-checkbox h-5 w-5 text-blue-600"
+                className="h-5 w-5"
                 checked={useCartao}
                 onChange={handleCartaoChange}
               />
@@ -162,7 +170,7 @@ export default function DolarParaReal() {
           </div>
         </div>
 
-        <button
+        <Button
           className={`mt-5 px-3 py-2 rounded-md text-white font-semibold flex items-center gap-2 cursor-pointer ${
             !dolarValue || parseFloat(dolarValue) <= 0
               ? "bg-gray-400 cursor-not-allowed"
@@ -171,7 +179,7 @@ export default function DolarParaReal() {
           onClick={handleConvert}
         >
           <Image src={ConvertIcon} alt="icon" /> Converter
-        </button>
+        </Button>
       </form>
 
       <div className="mt-3">

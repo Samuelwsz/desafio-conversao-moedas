@@ -4,7 +4,18 @@ import Image from "next/image"
 import { useState } from "react"
 import ConvertIcon from "@/public/Convert.svg"
 import { converterMoeda } from "../api/router"
-import Link from "next/link"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const moedas = [
   { value: "USD", label: "DOLAR" },
@@ -31,10 +42,13 @@ export default function ConversaoTeste() {
   return (
     <main className="mt-14">
       <div className="flex flex-col">
-        <label htmlFor="dolar" className="text-lg mb-1 text-gray-600 dark:text-white">
+        <label
+          htmlFor="dolar"
+          className="text-lg mb-1 text-gray-600 dark:text-white"
+        >
           Quantia
         </label>
-        <input
+        <Input
           type="number"
           placeholder="$ 1,00"
           value={quantia}
@@ -42,7 +56,7 @@ export default function ConversaoTeste() {
             const inputValue = parseFloat(e.target.value)
             setQuantia(isNaN(inputValue) ? "" : inputValue)
           }}
-          className="p-2 w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+          className="p-2 w-48 border dark:border-gray-300"
         />
       </div>
 
@@ -50,7 +64,7 @@ export default function ConversaoTeste() {
         <select
           value={deMoeda}
           onChange={(e) => setDeMoeda(e.target.value)}
-          className="p-2 mt-2 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+          className="p-2 mt-2 w-full md:w-48 border border-gray-300 rounded outline-none dark:bg-black"
         >
           {moedas.map((moeda) => (
             <option key={moeda.value} value={moeda.value} className="py-2">
@@ -62,7 +76,7 @@ export default function ConversaoTeste() {
         <select
           value={paraMoeda}
           onChange={(e) => setParaMoeda(e.target.value)}
-          className="p-2 mt-2 w-full md:w-48 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+          className="p-2 mt-2 w-full md:w-48 border border-gray-300 rounded outline-none dark:bg-black"
         >
           {moedas.map((moeda) => (
             <option key={moeda.value} value={moeda.value} className="py-2">
@@ -72,7 +86,7 @@ export default function ConversaoTeste() {
         </select>
       </div>
 
-      <button
+      <Button
         className={`mt-5 px-3 py-2 rounded-md text-white font-semibold flex items-center gap-2 cursor-pointer ${
           !quantia ||
           parseFloat(quantia as string) <= 0 ||
@@ -88,7 +102,7 @@ export default function ConversaoTeste() {
         }
       >
         <Image src={ConvertIcon} alt="icon" /> Converter
-      </button>
+      </Button>
 
       <div className="mt-3">
         <p>{resultado?.toFixed(2)}</p>
