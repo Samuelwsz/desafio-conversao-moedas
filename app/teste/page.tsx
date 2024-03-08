@@ -1,11 +1,10 @@
 "use client"
 
-import Image from "next/image"
 import { useState } from "react"
-import ConvertIcon from "@/public/Convert.svg"
-import { converterMoeda } from "../api/router"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { converterMoeda } from "../api/router"
+import { useRouter } from "next/navigation"
 
 const moedas = [
   { value: "USD", label: "DOLAR" },
@@ -23,10 +22,15 @@ export default function ConversaoTeste() {
 
   const [resultado, setResultado] = useState<number | undefined>(undefined)
 
+  const router = useRouter()
+
   async function handleConverterMoeda() {
     const convertedResult = await converterMoeda(quantia, deMoeda, paraMoeda)
     setQuantia("")
     setResultado(convertedResult)
+
+    // Navigate to the new page with the conversion result as a query parameter
+    router.push(`/teste/result?=${convertedResult.toFixed(2)}`)
   }
 
   return (
@@ -75,24 +79,6 @@ export default function ConversaoTeste() {
           ))}
         </select>
       </div>
-
-      <Button
-        className={`mt-5 px-3 py-2 rounded-md text-white font-semibold flex items-center gap-2 cursor-pointer ${
-          !quantia ||
-          parseFloat(quantia as string) <= 0 ||
-          deMoeda === paraMoeda
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-green-400 hover:bg-green-500"
-        }`}
-        onClick={() => handleConverterMoeda()}
-        disabled={
-          !quantia ||
-          parseFloat(quantia as string) <= 0 ||
-          deMoeda === paraMoeda
-        }
-      >
-        <Image src={ConvertIcon} alt="icon" /> Converter
-      </Button>
 
       <Button className="my-3" onClick={handleConverterMoeda}>
         Ir para página com resultado
