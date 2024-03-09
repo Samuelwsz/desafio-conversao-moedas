@@ -94,10 +94,6 @@ export default function ConversaoTeste() {
         <Image src={ConvertIcon} alt="icon" /> Converter
       </Button>
 
-      <Button className="my-3" onClick={handleConverterMoeda}>
-        Ir para página com resultado
-      </Button>
-
       <div className="mt-3">
         <p>{resultado?.toFixed(2)}</p>
       </div>

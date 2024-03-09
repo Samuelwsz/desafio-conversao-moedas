@@ -14,11 +14,6 @@ export default function Home() {
             Awesome Api
           </Link>
         </div>
-        <div className="bg-green-500 text-white p-2 rounded-md font-semibold">
-          <Link href="/teste" className="dark:text-black">
-            teste
-          </Link>
-        </div>
       </div>
     </>
   )

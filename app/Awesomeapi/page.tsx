@@ -5,24 +5,25 @@ import { Input } from "@/components/ui/input"
 import ConvertIcon from "@/public/Convert.svg"
 import axios from "axios"
 import Image from "next/image"
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { ChangeEvent, useEffect, useState } from "react"
 
 interface ExchangeRates {
   USDBRL: {
     bid: string
-    // outras propriedades, se houver
   }
-  // outras moedas, se houver
 }
 
 export default function DolarParaReal() {
   const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(null)
   const [dolarValue, setDolarValue] = useState("")
-  const [convertedValue, setConvertedValue] = useState("")
+  // const [convertedValue, setConvertedValue] = useState("")
   const [taxaEstado, setTaxaEstado] = useState(0)
 
   const [useDinheiro, setUseDinheiro] = useState(false) // Estado para controlar se o usuário selecionou "Dinheiro"
   const [useCartao, setUseCartao] = useState(false) // Estado para controlar se o usuário selecionou "Cartão"
+
+  const router = useRouter()
 
   useEffect(() => {
     const fetchExchangeRates = async () => {
@@ -70,13 +71,17 @@ export default function DolarParaReal() {
     return ""
   }
 
-  const handleConvert = (event: FormEvent) => {
+  {
+    /*
+    const handleConvert = (event: FormEvent) => {
     event.preventDefault()
 
     const convertedAmount = convertToReal()
     setConvertedValue(convertedAmount)
     setDolarValue("")
     setTaxaEstado(0)
+  }
+*/
   }
 
   // Atualize a entrada do campo de taxa do estado para capturar seu valor
@@ -100,6 +105,10 @@ export default function DolarParaReal() {
     if (useDinheiro) {
       setUseDinheiro(false) // Desativa a opção de "Dinheiro" se "Cartão" for selecionada
     }
+  }
+
+  function handleConvertionInNewPage() {
+    router.push(`/Awesomeapi/result?=${convertToReal()}`)
   }
 
   return (
@@ -170,7 +179,7 @@ export default function DolarParaReal() {
           </div>
         </div>
 
-        <Button
+        {/*<Button
           className={`mt-5 px-3 py-2 rounded-md text-white font-semibold flex items-center gap-2 cursor-pointer ${
             !dolarValue || parseFloat(dolarValue) <= 0
               ? "bg-gray-400 cursor-not-allowed"
@@ -179,15 +188,24 @@ export default function DolarParaReal() {
           onClick={handleConvert}
         >
           <Image src={ConvertIcon} alt="icon" /> Converter
-        </Button>
+        </Button>*/}
       </form>
 
+      <Button
+        variant={"convertionButtonAwesome"}
+        className="my-3 bg-teal-600 flex justify-center items-center gap-3 text-base"
+        onClick={handleConvertionInNewPage}
+      >
+        <Image src={ConvertIcon} alt="icon" /> Converter
+      </Button>
+
       <div className="mt-3">
-        {convertedValue && (
+        {/*  {convertedValue && (
           <div className="mt-3">
             <p>R$ {convertedValue}</p>
           </div>
-        )}
+      )}*/}
+
         {/*  <p>
           {convertedValue &&
             `${convertedValue} (+ ${taxaEstado}% de taxa do estado)`}
